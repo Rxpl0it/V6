@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}The 0 Paradise{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('main.serve_css') }}">
+    <link rel="icon" href="{{ url_for('main.serve_static', filename='favicon.ico') }}">
+</head>
+<body>
+    <div class="overlay"></div>
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="{{ url_for('main.serve_static', filename='logo.png') }}" alt="Logo" class="logo">
+                <h1>The 0 Paradise</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('main.home') }}" {% if request.endpoint == 'main.home' %}class="active"{% endif %}>Home</a></li>
+                    <li><a href="{{ url_for('main.tools') }}" {% if request.endpoint == 'main.tools' %}class="active"{% endif %}>Tools</a></li>
+                    <li><a href="{{ url_for('main.combo') }}" {% if request.endpoint == 'main.combo' %}class="active"{% endif %}>Combo</a></li>
+                    <li><a href="{{ url_for('main.tutorials') }}" {% if request.endpoint == 'main.tutorials' %}class="active"{% endif %}>Tutorials</a></li>
+                    <li><a href="{{ url_for('main.shop') }}" {% if request.endpoint == 'main.shop' %}class="active"{% endif %}>Shop</a></li>
+                    {% if current_user.is_authenticated %}
+                        <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('auth.login') }}" {% if request.endpoint == 'auth.login' %}class="active"{% endif %}>Login</a></li>
+                        <li><a href="{{ url_for('auth.register') }}" {% if request.endpoint == 'auth.register' %}class="active"{% endif %}>Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <div id="volume-control">
+        <input type="range" id="volume-slider" min="0" max="100" value="50">
+    </div>
+
+    <script src="{{ url_for('main.serve_static', filename='script.js') }}"></script>
+</body>
+</html>

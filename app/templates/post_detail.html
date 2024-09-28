@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="post-detail">
+    <div class="post-header">
+        <h1>{{ post.title }}</h1>
+        <span class="category-tag">{{ post.category.capitalize() }}</span>
+    </div>
+    <div class="post-content">
+        <div class="post-image">
+            <img src="{{ url_for('main.serve_file', post_id=post.id, filename=post.thumbnail_filename) }}" alt="{{ post.title }}">
+        </div>
+        <div class="post-info">
+            <h2>Description</h2>
+            <p>{{ post.description }}</p>
+            {% if post.category == 'shop' %}
+            <div class="shop-info">
+                <p class="price">Price: ${{ "%.2f"|format(post.price) }}</p>
+                <a href="{{ post.purchase_link }}" class="btn purchase-btn" target="_blank">Purchase</a>
+            </div>
+            {% endif %}
+            <a href="{{ url_for('main.serve_file', post_id=post.id, filename=post.file_filename) }}" class="btn download-btn">Download</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

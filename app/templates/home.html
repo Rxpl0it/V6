@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Home - The 0 Paradise{% endblock %}
+
+{% block content %}
+    <div class="hero">
+        <h2>Welcome To The 0 Paradise</h2>
+        <p>Best Tools For Combo Making</p>
+        <a href="{{ url_for('main.tools') }}" class="btn btn-cta">Explore Tools</a>
+    </div>
+
+    <section class="featured-tools">
+        <h3>Featured Tools</h3>
+        <div class="post-grid">
+            {% for tool in featured_tools %}
+                <div class="post-card">
+                    <img src="{{ url_for('main.serve_file', post_id=tool.id, filename=tool.thumbnail_filename) }}" alt="{{ tool.title }}">
+                    <div class="post-card-content">
+                        <h4>{{ tool.title }}</h4>
+                        <p>{{ tool.description[:100] }}...</p>
+                        <a href="{{ url_for('main.post_detail', post_id=tool.id) }}" class="btn">Learn More</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="categories">
+        <h3>Categories</h3>
+        <div class="category-grid">
+            <a href="{{ url_for('main.tools') }}" class="category-card">
+                <h4>Tools</h4>
+            </a>
+            <a href="{{ url_for('main.combo') }}" class="category-card">
+                <h4>Combo</h4>
+            </a>
+            <a href="{{ url_for('main.tutorials') }}" class="category-card">
+                <h4>Tutorials</h4>
+            </a>
+            <a href="{{ url_for('main.shop') }}" class="category-card">
+                <h4>Shop</h4>
+            </a>
+        </div>
+    </section>
+
+    <section class="user-stats-box">
+        <h3>Registered Users</h3>
+        <p>Total Users: {{ total_users }}</p>
+        <ul>
+            {% for user in all_users %}
+                <li>{{ user.username }}</li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endblock %}
